@@ -10,44 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuideAdapter extends FragmentPagerAdapter {
-    private boolean isCanScroll = false ;
-    private List<Fragment> fragmentList = new ArrayList<Fragment>();
+    private List<Fragment> mlist;
 
-
-    public void setScanScroll(boolean isCanScroll) {
-        this.isCanScroll = isCanScroll;
-    }
-
-
-    public GuideAdapter(FragmentManager fm, List<Fragment> fragmentList ) {
+    public GuideAdapter(FragmentManager fm,List<Fragment> mlist) {
         super(fm);
-        this.fragmentList = fragmentList;
+        this.mlist=mlist;
     }
 
+    public void getDate(List<Fragment> mlist) {
+        this.mlist = mlist;
+    }
 
-
+    @Override
+    public Fragment getItem(int i) {
+        return mlist.get(i);
+    }
 
     @Override
     public int getCount() {
-        return fragmentList.size();
+        return mlist.size();
+
     }
-
-    public int getc(){
-       int i=fragmentList.size();
-        return i;
-    }
-
-    @Override
-    public   Fragment getItem(int arg0) {
-        return fragmentList.get( arg0 );
-    }
-
-
-
-    /*@Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
-        return view == o;
-    }*/
-
 
 }

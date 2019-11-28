@@ -63,7 +63,7 @@ public class TheTest implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * uid : 8ad35aed6eaf6d4a016eaf6d5a610000
          * theName : android测试

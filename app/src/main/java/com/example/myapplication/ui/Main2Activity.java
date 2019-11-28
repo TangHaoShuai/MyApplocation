@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.adpter.CustomViewPager;
 import com.example.myapplication.adpter.GuideAdapter;
+import com.example.myapplication.bean.Exercise_bean;
 import com.example.myapplication.bean.TheTest;
 import com.google.gson.Gson;
 
@@ -28,12 +30,12 @@ import okhttp3.Response;
 
 
 public class Main2Activity extends AppCompatActivity {
-    private ViewPager viewPager;
+    public ViewPager viewPager;
     private String TestPaperID;
     private final int TOPIC_SUCCESS = 1;
     private final int WRONG = 0;
     private String url = "http://47.103.15.111:8080/home/ExerciseJson?val=";
-    private ArrayList<TheTest> list = new ArrayList<>();
+
     private GuideAdapter mGuideAdapter;
     int max, zq, cw;
     private Handler handler=new Handler(new Handler.Callback() {
@@ -44,16 +46,18 @@ public class Main2Activity extends AppCompatActivity {
                     Toast.makeText( Main2Activity.this, "请求出错！" + msg.obj, Toast.LENGTH_LONG).show();
                     break;
                 case TOPIC_SUCCESS:
-                    list = (ArrayList<TheTest>) msg.obj;
-                    max = list.size();
+                 ArrayList<Exercise_bean> list = (ArrayList<Exercise_bean>) msg.obj;
+                 /*   max = list.size();*/
+
                     List<Fragment> fragments = new ArrayList<Fragment>();
-                    for (int y = 0; y < list.size(); y++) {
-                        Fragment fragment = initFragmenView(list.get(y), list.size());
+                    for (int y = 0; y < list.get(0).getData().size(); y++) {
+                        Fragment fragment = initFragmenView(list.get(0).getData().get(y), y,list.size());
                         fragments.add(fragment);
                     }
                     mGuideAdapter = new GuideAdapter(getSupportFragmentManager(), fragments);
                     viewPager.setAdapter(mGuideAdapter);
                     break;
+
             }
             return true;
         }
@@ -65,29 +69,27 @@ public class Main2Activity extends AppCompatActivity {
          setContentView(R.layout.activity_main2);
         Intent intent = getIntent();
         TestPaperID = intent.getStringExtra("Key");
-        init();
+       init();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
                     getTheText(url);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-        });
+        }).start();
     }
 
-    private Fragment initFragmenView(TheTest topic, int nub) {
-        return BlankFragment2.newInstance(topic, nub);
+    private Fragment initFragmenView(Exercise_bean.DataBean topic, int post,int nub) {
+        return BlankFragment2.newInstance(topic, post,nub);
     }
 
     private void init(){
-        viewPager.findViewById(R.id.viewpager);
+        viewPager=findViewById(R.id.viewpager);
     }
 
     private void getTheText(String url){
+        ArrayList<Exercise_bean> list = new ArrayList<Exercise_bean>();
+
         Message message=Message.obtain();
         OkHttpClient mOkHttpClient=new OkHttpClient();
         Request request =new Request.Builder().url(url).build();
@@ -97,9 +99,11 @@ public class Main2Activity extends AppCompatActivity {
             String message2=response.body().string();
             JSONObject jsonObject=new JSONObject(message2);
             Gson gson=new Gson();
-            TheTest test=gson.fromJson(jsonObject.toString(),TheTest.class);
+            Exercise_bean test=gson.fromJson(jsonObject.toString(),Exercise_bean.class);
+
+            list.add(test);
             message.what=TOPIC_SUCCESS;
-            message.obj=test;
+            message.obj=list;
         }catch (Exception e){
             message.what=WRONG;
             message.obj=e.getMessage();
