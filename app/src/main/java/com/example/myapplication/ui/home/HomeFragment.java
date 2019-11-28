@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,6 +8,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -26,6 +28,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.adpter.Home_adpter;
 import com.example.myapplication.bean.TheTest;
 import com.example.myapplication.bean.User_bean;
+import com.example.myapplication.ui.Main2Activity;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -50,14 +53,14 @@ public class HomeFragment extends Fragment    {
 
     private final int TOPIC_SUCCESS = 1;
     private final int WRONG = 1;
-
+    private ArrayList<TheTest> list = new  ArrayList<TheTest>();
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case TOPIC_SUCCESS:
-                    ArrayList<TheTest> list = (ArrayList<TheTest>) msg.obj;
+                    list = (ArrayList<TheTest>) msg.obj;
                     adpter.getData(list);
                     adpter.notifyDataSetChanged();
 //                    Toast.makeText(HomeActivity.this,"登陆成功！",Toast.LENGTH_SHORT).show();
@@ -90,7 +93,16 @@ public class HomeFragment extends Fragment    {
         adpter = new Home_adpter(getActivity());
         listview_home = view.findViewById(R.id.listview_home);
         listview_home.setAdapter(adpter);
-
+        listview_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(this,"登陆成功！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),list.get(0).getData().get(position).getTheName(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), Main2Activity.class);
+                intent.putExtra("Key",list.get(0).getData().get(position).getTestPaperID());
+                startActivity(intent);
+            }
+        });
     }
 
     public void TopicJson(String url) {

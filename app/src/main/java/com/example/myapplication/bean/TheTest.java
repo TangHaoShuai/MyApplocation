@@ -1,8 +1,9 @@
 package com.example.myapplication.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TheTest {
+public class TheTest implements Serializable {
 
 
     /**
