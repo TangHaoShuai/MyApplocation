@@ -1,6 +1,9 @@
 package com.example.myapplication.ui;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -8,10 +11,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.adpter.BaseDialogFragment;
 import com.example.myapplication.adpter.CustomViewPager;
 import com.example.myapplication.adpter.GuideAdapter;
 import com.example.myapplication.bean.Exercise_bean;
@@ -29,7 +35,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class Main2Activity extends AppCompatActivity {
+public class Main2Activity extends BaseDialogFragment {
     public ViewPager viewPager;
     private String TestPaperID;
     private final int TOPIC_SUCCESS = 1;
@@ -43,7 +49,7 @@ public class Main2Activity extends AppCompatActivity {
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case WRONG:
-                    Toast.makeText( Main2Activity.this, "请求出错！" + msg.obj, Toast.LENGTH_LONG).show();
+                    Toast.makeText( getActivity(), "请求出错！" + msg.obj, Toast.LENGTH_LONG).show();
                     break;
                 case TOPIC_SUCCESS:
                  ArrayList<Exercise_bean> list = (ArrayList<Exercise_bean>) msg.obj;
@@ -51,11 +57,12 @@ public class Main2Activity extends AppCompatActivity {
 
                     List<Fragment> fragments = new ArrayList<Fragment>();
                     for (int y = 0; y < list.get(0).getData().size(); y++) {
-                        Fragment fragment = initFragmenView(list.get(0).getData().get(y), y,list.size());
+                        BlankFragment2 fragment = BlankFragment2.newInstance(list.get(0).getData().get(y), y,list.size());
                         fragments.add(fragment);
                     }
-                    mGuideAdapter = new GuideAdapter(getSupportFragmentManager(), fragments);
+                    mGuideAdapter = new GuideAdapter(getChildFragmentManager(), fragments);
                     viewPager.setAdapter(mGuideAdapter);
+                    viewPager.setCurrentItem(0);
                     break;
 
             }
@@ -63,28 +70,44 @@ public class Main2Activity extends AppCompatActivity {
         }
     });
 
+    public static Main2Activity newInstance(String data) {
+        Main2Activity fragment = new Main2Activity();
+        Bundle args = new Bundle();
+        args.putString("data",data);
+      /*  args.putSerializable("data", data);
+        args.putInt("post",post);
+        args.putInt("count",count);*/
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-         setContentView(R.layout.activity_main2);
-        Intent intent = getIntent();
-        TestPaperID = intent.getStringExtra("Key");
-       init();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.activity_main2, container, false);
+        init(view);
+
+        Bundle intent = getArguments();
+        TestPaperID = intent.getString("Key");
+        init(view);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                    getTheText(url);
+                getTheText(url);
             }
         }).start();
+        return view;
     }
 
     private Fragment initFragmenView(Exercise_bean.DataBean topic, int post,int nub) {
         return BlankFragment2.newInstance(topic, post,nub);
     }
 
-    private void init(){
-        viewPager=findViewById(R.id.viewpager);
+    private void init(View view){
+        viewPager=view.findViewById(R.id.viewpager);
+
     }
 
     private void getTheText(String url){

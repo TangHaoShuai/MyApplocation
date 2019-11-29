@@ -96,11 +96,14 @@ public class HomeFragment extends Fragment    {
         listview_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(this,"登陆成功！",Toast.LENGTH_SHORT).show();
                 Toast.makeText(getContext(),list.get(0).getData().get(position).getTheName(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getContext(), Main2Activity.class);
-                intent.putExtra("Key",list.get(0).getData().get(position).getTestPaperID());
-                startActivity(intent);
+
+                Main2Activity main2Activity=Main2Activity.newInstance(list.get(0).getData().get(position).getTestPaperID());
+                main2Activity.show(getChildFragmentManager(),"Main2Activity");
+
+              /*  Intent intent = new Intent(getContext(), Main2Activity.class);
+                intent.putExtra("Key",);
+                startActivity(intent);*/
             }
         });
     }

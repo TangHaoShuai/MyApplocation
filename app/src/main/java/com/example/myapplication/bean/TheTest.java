@@ -45,6 +45,8 @@ public class TheTest implements Serializable {
                 ", count=" + count +
                 ", data=" + data +
                 '}';
+
+        
     }
 
     public int getCount() {

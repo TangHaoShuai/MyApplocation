@@ -1,13 +1,10 @@
 package com.example.myapplication.ui;
 
-import android.content.Context;
+
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +17,8 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.bean.Exercise_bean;
-import com.example.myapplication.bean.TheTest;
 import com.squareup.picasso.Picasso;
+
 
 public class BlankFragment2 extends Fragment implements View.OnClickListener {
     private TextView topic, hint, select;
@@ -66,10 +63,12 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
 
         topic.setText((post + 1) + "、" + data.getQuestion());
         if (data.getUrl().length() != 0) {
-          /*  Picasso.with(getActivity())
+
+         Picasso.with(getActivity())
                     .load(data.getUrl())
                     .fit()
-                    .into(imageView);*/
+                    .into(imageView);
+
         } else {
             imageView.setVisibility(View.GONE);
             LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) option_ment.getLayoutParams();
@@ -106,16 +105,17 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
 
 //                Exercises_DialogFagment df = (Exercises_DialogFagment) getParentFragment();
 
-//                if (i + 1 == Integer.valueOf(data.getAnswer())) {
-//                    setRbStyl(radioButton, getActivity().getResources().getDrawable(R.drawable.trueimg), "#00FF00");
-//                /*    sqldao.setResult(post, Integer.parseInt(data.getAnswer()));
-//                    sqldao.close();*/
-//
-//                    Main2Activity fm=(Main2Activity)getActivity();
-//
-//                    fm.viewPager.setCurrentItem(fm.viewPager.getCurrentItem()+1);
-//
-//                }
+                if (i + 1 == Integer.valueOf(data.getAnswer())) {
+                    setRbStyl(radioButton, getActivity().getResources().getDrawable(R.drawable.trueimg), "#00FF00");
+                /*    sqldao.setResult(post, Integer.parseInt(data.getAnswer()));
+                    sqldao.close();*/
+
+                    Main2Activity fm=(Main2Activity)getParentFragment();
+
+                    fm.viewPager.setCurrentItem(fm.viewPager.getCurrentItem()+1);
+
+
+                }
                 if (i + 1 != Integer.valueOf(data.getAnswer())) {
                     setRbStyl(radioButton, getActivity().getResources().getDrawable(R.drawable.flasimg), "#FF0000");
                  /*   sqldao.setResult(post, i + 1);
@@ -124,9 +124,10 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
                     setLin_selectStyle();
                 }
 
-        /*        df.TrueOrFalse();*/
-                /*disableRadioGroup(group, false);*/
+         /*       df.TrueOrFalse();*/
+                disableRadioGroup(group, false);
                 /*  mInterface.AdvanceFragment();*/
+                option_ment.setEnabled(false);
             }
         });
         return view;
@@ -136,6 +137,12 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
         lin_select.setVisibility(View.VISIBLE);
         select.setText("正确答案：" + abcd(Integer.parseInt(data.getAnswer())));
         hint.setText(data.getExplains());
+    }
+
+    public void disableRadioGroup(RadioGroup testRadioGroup, Boolean mBoolean) {
+        for (int i = 0; i < testRadioGroup.getChildCount(); i++) {
+            testRadioGroup.getChildAt(i).setEnabled(mBoolean);
+        }
     }
 
     private static String abcd(int i) {
