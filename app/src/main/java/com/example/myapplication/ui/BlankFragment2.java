@@ -4,11 +4,17 @@ package com.example.myapplication.ui;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -21,25 +27,28 @@ import com.squareup.picasso.Picasso;
 
 
 public class BlankFragment2 extends Fragment implements View.OnClickListener {
+    private EditText MultipleChoice;
     private TextView topic, hint, select;
     private ImageView imageView;
     private RadioGroup option_ment;
     private RadioButton A_rb, B_rb, C_rb, D_rb;
     private LinearLayout lin_select;
     private Exercise_bean.DataBean data;
-    int post,count;
+    int post, count;
+
+    public Button submit;
+
 
     public BlankFragment2() {
         // Required empty public constructor
     }
 
-
-    public static BlankFragment2 newInstance(Exercise_bean.DataBean data, int post,int count) {
+    public static BlankFragment2 newInstance(Exercise_bean.DataBean data, int post, int count) {
         BlankFragment2 fragment = new BlankFragment2();
         Bundle args = new Bundle();
         args.putSerializable("data", data);
-        args.putInt("post",post);
-        args.putInt("count",count);
+        args.putInt("post", post);
+        args.putInt("count", count);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,27 +57,26 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-           /* mParam1 = (TheTest) getArguments().getSerializable(ARG_PARAM1);*/
+            /* mParam1 = (TheTest) getArguments().getSerializable(ARG_PARAM1);*/
             data = (Exercise_bean.DataBean) getArguments().getSerializable("data");
-            post=getArguments().getInt("post");
-            count=getArguments().getInt("count");
+            post = getArguments().getInt("post");
+            count = getArguments().getInt("count");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       View view=inflater.inflate(R.layout.fragment_blank_fragment2, container, false);
+        View view = inflater.inflate(R.layout.fragment_blank_fragment2, container, false);
         init(view);
-
+        final Main2Activity main2Activity = (Main2Activity) getParentFragment();
         topic.setText((post + 1) + "、" + data.getQuestion());
-        if (data.getUrl().length() != 0) {
 
-         Picasso.with(getActivity())
+        if (data.getUrl().length() != 0) {
+            Picasso.with(getActivity())
                     .load(data.getUrl())
                     .fit()
                     .into(imageView);
-
         } else {
             imageView.setVisibility(View.GONE);
             LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) option_ment.getLayoutParams();
@@ -76,73 +84,87 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
             linearParams.width = WindowManager.LayoutParams.MATCH_PARENT;
             linearParams.weight = 0;
             option_ment.setLayoutParams(linearParams);
-
             A_rb.setPadding(0, 0, 0, 35);
             B_rb.setPadding(0, 0, 0, 35);
             C_rb.setPadding(0, 0, 0, 35);
             D_rb.setPadding(0, 0, 0, 35);
         }
 
+        if (data.getItem1().length() == 0) {
+         /*   option_ment.setVisibility(View.GONE);*/
+            MultipleChoice.setVisibility(View.VISIBLE);
 
-        if (data.getItem4().length()!=0) {
+            A_rb.setVisibility(View.GONE);
+            B_rb.setVisibility(View.GONE);
+
+        } else
+          /*  if (data.getItem4().length() != 0) */
+            {
             A_rb.setText("A、" + data.getItem1());
             B_rb.setText("B、" + data.getItem2());
             C_rb.setText("C、" + data.getItem3());
             D_rb.setText("D、" + data.getItem4());
         }
 
+
         option_ment.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-              /*  sqldao = new SQLDAO(getActivity(), Integer.valueOf(Subjects), title);*/
+                /*  sqldao = new SQLDAO(getActivity(), Integer.valueOf(Subjects), title);*/
 
                 int i = group.indexOfChild(group.findViewById(checkedId));
-
                 RadioButton radioButton = group.findViewById(checkedId);
-
                 radioButton.setText("  " + radioButton.getText());
-
-
 //                Exercises_DialogFagment df = (Exercises_DialogFagment) getParentFragment();
-
                 if (i + 1 == Integer.valueOf(data.getAnswer())) {
                     setRbStyl(radioButton, getActivity().getResources().getDrawable(R.drawable.trueimg), "#00FF00");
                 /*    sqldao.setResult(post, Integer.parseInt(data.getAnswer()));
                     sqldao.close();*/
-
-                    Main2Activity fm=(Main2Activity)getParentFragment();
-
-                  //  fm.viewPager.setCurrentItem(fm.viewPager.getCurrentItem()+1);
+                    Main2Activity fm = (Main2Activity) getParentFragment();
+                    //  fm.viewPager.setCurrentItem(fm.viewPager.getCurrentItem()+1);
 
 
+                    main2Activity.right++;
                 }
                 if (i + 1 != Integer.valueOf(data.getAnswer())) {
                     setRbStyl(radioButton, getActivity().getResources().getDrawable(R.drawable.flasimg), "#FF0000");
                  /*   sqldao.setResult(post, i + 1);
                     sqldao.close();*/
-
                     setLin_selectStyle();
+                    main2Activity.wrong++;
                 }
-
-         /*       df.TrueOrFalse();*/
+                /*       df.TrueOrFalse();*/
                 disableRadioGroup(group, false);
                 /*  mInterface.AdvanceFragment();*/
-                option_ment.setEnabled(false);
+             /*   option_ment.setEnabled(false);*/
+            }
+        });
+
+
+        MultipleChoice.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+               if( MultipleChoice.getText().equals(data.getAnswer())){
+                   main2Activity.right++;
+               }else {
+                   main2Activity.wrong++;
+               }
+                lin_select.setVisibility(View.VISIBLE);
+                select.setText("正确答案：" + data.getAnswer());
+                hint.setText(data.getExplains());
+                select.setGravity(Gravity.LEFT);
+                return false;
             }
         });
         return view;
 
     }
+
     private void setLin_selectStyle() {
         lin_select.setVisibility(View.VISIBLE);
         select.setText("正确答案：" + abcd(Integer.parseInt(data.getAnswer())));
         hint.setText(data.getExplains());
-    }
-
-    public void disableRadioGroup(RadioGroup testRadioGroup, Boolean mBoolean) {
-        for (int i = 0; i < testRadioGroup.getChildCount(); i++) {
-            testRadioGroup.getChildAt(i).setEnabled(mBoolean);
-        }
     }
 
     private static String abcd(int i) {
@@ -168,13 +190,13 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
         select = view.findViewById(R.id.select);
         hint = view.findViewById(R.id.hint);
         topic = view.findViewById(R.id.topic);
-        /*        Test_count = view.findViewById(R.id.test_count);*/
+        /*  Test_count = view.findViewById(R.id.test_count);*/
 
         lin_select = view.findViewById(R.id.lin_select);
-
         imageView = view.findViewById(R.id.imageView);
-
         option_ment = view.findViewById(R.id.option_ment);
+
+        MultipleChoice=view.findViewById(R.id.MultipleChoice);
 
         A_rb = view.findViewById(R.id.A_rb);
         B_rb = view.findViewById(R.id.B_rb);
@@ -188,9 +210,28 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
         D_rb.setOnClickListener(this);
     }
 
+    public void disableRadioGroup(RadioGroup testRadioGroup, Boolean mBoolean) {
+        for (int i = 0; i < testRadioGroup.getChildCount(); i++) {
+            testRadioGroup.getChildAt(i).setEnabled(mBoolean);
+        }
+    }
+
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.A_rb:
 
+                break;
+            case R.id.B_rb:
+
+                break;
+            case R.id.C_rb:
+
+                break;
+            case R.id.D_rb:
+
+                break;
+        }
     }
 }

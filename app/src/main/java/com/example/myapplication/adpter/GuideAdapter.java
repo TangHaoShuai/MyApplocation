@@ -30,7 +30,6 @@ public class GuideAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return mlist.size();
-
     }
 
 }
