@@ -112,7 +112,7 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
 
                     Main2Activity fm=(Main2Activity)getParentFragment();
 
-                    fm.viewPager.setCurrentItem(fm.viewPager.getCurrentItem()+1);
+                  //  fm.viewPager.setCurrentItem(fm.viewPager.getCurrentItem()+1);
 
 
                 }

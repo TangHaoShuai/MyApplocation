@@ -31,9 +31,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private Button login;
     String url="http://47.103.15.111:8080/home/user?username=" ;
      String url2= "&passWord=";
-
      private final int TOPIC_SUCCESS=1;
-    private final int WRONG=1;
+     private final int WRONG=1;
 
      private Handler handler=new Handler(new Handler.Callback() {
          @Override
