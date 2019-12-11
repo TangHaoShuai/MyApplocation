@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.myapplication.R;
 import com.example.myapplication.bean.TheTest;
@@ -27,7 +28,12 @@ public class Home_adpter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return theTests.size();
+        if (theTests.isEmpty()  || theTests.size() == 0 ){
+            return  0;
+        }else{
+            return theTests.size();
+        }
+
     }
 
     @Override
@@ -43,9 +49,11 @@ public class Home_adpter extends BaseAdapter {
     @Override
     public View getView(int i, View v, ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        v = layoutInflater.inflate(R.layout.item_home_listview, null, false);
+        v = layoutInflater.inflate(R.layout.mzz, null, false);
 
         TextView theName, theStartTime, State, theEndOfTime;
+        ImageView tupian = v.findViewById(R.id.tupian);
+        tupian.setImageResource(R.drawable.kaoshi);
         theName = v.findViewById(R.id.theName);
         theStartTime = v.findViewById(R.id.theStartTime);
         State = v.findViewById(R.id.State);

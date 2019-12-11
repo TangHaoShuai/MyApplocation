@@ -152,9 +152,7 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
                     main2Activity.wrong++;
                 }
                 MultipleChoice.setFocusable(false);
-//                getWindow()
                 InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-             //   imm.hideSoftInputFromWindow(get.getDecorView().getWindowToken(), 0);  getCurrentFocus().getWindowToken()
                 imm.hideSoftInputFromWindow(getView().getWindowToken(),0);
                 lin_select.setVisibility(View.VISIBLE);
                 select.setText("正确答案：" + data.getAnswer());

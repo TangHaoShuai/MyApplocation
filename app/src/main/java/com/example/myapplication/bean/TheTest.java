@@ -9,8 +9,8 @@ public class TheTest implements Serializable {
     /**
      * msg : 0
      * code : 0
-     * data : [{"uid":"8ad35aed6eaf6d4a016eaf6d5a610000","theName":"android测试","theStartTime":"2019.11.28 8:30","State":"正在进行","theEndOfTime":"2019.11.29 8:30","TestPaperID":"001"},{"uid":"8ad35aed6eaf6e17016eaf6e24c20000","theName":"android测试","theStartTime":"2019.11.28 8:30","State":"正在进行","theEndOfTime":"2019.11.29 8:30","TestPaperID":"002"},{"uid":"8ad35aed6eaf7111016eaf7158e20000","theName":"android测试","theStartTime":"2019.11.28 8:30","State":"正在进行","theEndOfTime":"2019.11.29 8:30","TestPaperID":"003"},{"uid":"8ad35aed6eaf727a016eaf72881d0000","theName":"android测试","theStartTime":"2019.11.28 8:30","State":"正在进行","theEndOfTime":"2019.11.29 8:30","TestPaperID":"004"},{"uid":"8ad35aed6eaf8115016eaf8126e00002","theName":"android测试","theStartTime":"2019.11.28 8:30","State":"正在进行","theEndOfTime":"2019.11.29 8:30","TestPaperID":"004"}]
-     * count : 5
+     * data : [{"uid":"402880f46eedab73016eeef4beb60005","theName":"Android基础考试","theStartTime":"2019-12-10 16:37:10","State":"正在进行","theEndOfTime":"2020-01-10 00:00:00","TestPaperID":" 001 "},{"uid":"402880f46eedab73016eeef5167d0006","theName":"IOS基础考试","theStartTime":"2019-12-10 16:37:10","State":"正在进行","theEndOfTime":"2020-01-10 00:00:00","TestPaperID":" 002 "},{"uid":"402880f46eedab73016eeef5886e0007","theName":"Android进阶考试","theStartTime":"2019-12-10 16:38:07","State":"已经结束","theEndOfTime":"2020-01-11 00:00:00","TestPaperID":" 002 "},{"uid":"402880f46ef28b6a016ef28b7ee6000d","theName":"android测试","theStartTime":"2019.11.28 8:30","State":"正在进行","theEndOfTime":"2019.11.29 8:30","TestPaperID":"004"}]
+     * count : 4
      */
 
     private int msg;
@@ -30,23 +30,8 @@ public class TheTest implements Serializable {
         return code;
     }
 
-    public TheTest() {
-    }
-
     public void setCode(int code) {
         this.code = code;
-    }
-
-    @Override
-    public String toString() {
-        return "TheTest{" +
-                "msg=" + msg +
-                ", code=" + code +
-                ", count=" + count +
-                ", data=" + data +
-                '}';
-
-        
     }
 
     public int getCount() {
@@ -65,14 +50,14 @@ public class TheTest implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable {
+    public static class DataBean {
         /**
-         * uid : 8ad35aed6eaf6d4a016eaf6d5a610000
-         * theName : android测试
-         * theStartTime : 2019.11.28 8:30
+         * uid : 402880f46eedab73016eeef4beb60005
+         * theName : Android基础考试
+         * theStartTime : 2019-12-10 16:37:10
          * State : 正在进行
-         * theEndOfTime : 2019.11.29 8:30
-         * TestPaperID : 001
+         * theEndOfTime : 2020-01-10 00:00:00
+         * TestPaperID :  001
          */
 
         private String uid;

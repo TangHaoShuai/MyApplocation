@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment    {
     private HomeViewModel homeViewModel;
     private ListView listview_home;
 
-    String url = "http://47.103.15.111:8080/home/TheTestJosn";
+    String url = "http://47.103.15.111:8080/home/TheTestJson?val=&page=1&limit=50";
 
     private Home_adpter adpter;
 
@@ -63,9 +63,7 @@ public class HomeFragment extends Fragment    {
                     list = (ArrayList<TheTest>) msg.obj;
                     adpter.getData(list);
                     adpter.notifyDataSetChanged();
-//                    Toast.makeText(HomeActivity.this,"登陆成功！",Toast.LENGTH_SHORT).show();
-//                    Intent intent=new Intent(HomeActivity.this, MainActivity.class);
-//                    startActivity(intent);
+
                     break;
             }
             return false;
@@ -96,10 +94,24 @@ public class HomeFragment extends Fragment    {
         listview_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),list.get(0).getData().get(position).getTheName(),Toast.LENGTH_SHORT).show();
 
-                Main2Activity main2Activity=Main2Activity.newInstance(list.get(0).getData().get(position).getTestPaperID());
-                main2Activity.show(getChildFragmentManager(),"Main2Activity");
+
+                 String var= list.get(0).getData().get(position).getTestPaperID().replaceAll(" ","");
+                // var.substring(1);
+                 Main2Activity.url="http://47.103.15.111:8080/home/ExerciseJson?val="+var+"&page=1&limit=50";
+
+
+
+                String zt = list.get(0).getData().get(position).getState().replaceAll(" ","");
+                if (zt.equals("已经结束")){
+                    Toast.makeText(getContext(),"考试已经结束",Toast.LENGTH_SHORT).show();
+                }else if (zt.equals("没有开始")){
+                    Toast.makeText(getContext(),"考试没有开始",Toast.LENGTH_SHORT).show();
+                }else {
+                    Main2Activity main2Activity=Main2Activity.newInstance(list.get(0).getData().get(position).getTestPaperID());
+                    main2Activity.show(getChildFragmentManager(),"Main2Activity");
+                }
+
 
               /*  Intent intent = new Intent(getContext(), Main2Activity.class);
                 intent.putExtra("Key",);

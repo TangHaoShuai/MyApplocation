@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 
+import com.example.myapplication.ui.Main2Activity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,7 +36,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+
+        TextView textView1 = navigationView.getHeaderView(0).findViewById(R.id.usernamess);
+        TextView textView = navigationView.getHeaderView(0).findViewById(R.id.youxiang);
+
+        textView1.setText(HomeActivity.user_bean.getUsername());
+        textView.setText(HomeActivity.user_bean.getEmail());
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -66,4 +77,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 || super.onSupportNavigateUp();
     }*/
 
+
+    @Override
+    public void onOptionsMenuClosed(Menu menu) {
+
+        super.onOptionsMenuClosed(menu);
+    }
 }

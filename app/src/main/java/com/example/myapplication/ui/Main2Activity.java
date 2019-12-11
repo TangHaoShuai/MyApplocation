@@ -45,11 +45,11 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
     private String TestPaperID;
     private final int TOPIC_SUCCESS = 1;
     private final int WRONG = 0;
-    private String url = "http://47.103.15.111:8080/home/ExerciseJson?val=";
-    private Button submit,tuichu;
+    public  static String  url = "";
+    private Button submit, tuichu;
     private TextView count;
 
-    public int right,wrong;
+    public int right, wrong;
 
     private GuideAdapter mGuideAdapter;
     int max, zq, cw;
@@ -102,7 +102,7 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
         tuichu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(getActivity(), "423543", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getActivity(), "423543", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);
             }
@@ -115,6 +115,7 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
         new Thread(new Runnable() {
             @Override
             public void run() {
+                url.replaceAll(" ", "");
                 getTheText(url);
             }
         }).start();
@@ -131,7 +132,6 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
         viewPager.setOnPageChangeListener(this);
         submit.setOnClickListener(this);
     }
-
 
 
     private void getTheText(String url) {
@@ -183,7 +183,7 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.submit:
-                BlankFragment3 fm = BlankFragment3.newInstance(right,wrong,mGuideAdapter.getCount());
+                BlankFragment3 fm = BlankFragment3.newInstance(right, wrong, mGuideAdapter.getCount());
                 fm.show(getChildFragmentManager(), "BlankFragment3");
                 break;
 //            case R.id.tuichu:
