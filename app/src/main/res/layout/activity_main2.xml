@@ -14,17 +14,18 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
+            android:id="@+id/tuichu"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:text="退出" />
+            android:background="@android:drawable/ic_media_previous" />
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="TextView" />
+            android:gravity="center"
+            android:text="正在考试"
+            android:textSize="24sp" />
     </LinearLayout>
 
     <androidx.viewpager.widget.ViewPager

@@ -1,6 +1,8 @@
 package com.example.myapplication.ui;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,10 +23,13 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.bean.Exercise_bean;
 import com.squareup.picasso.Picasso;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 
 public class BlankFragment2 extends Fragment implements View.OnClickListener {
@@ -36,7 +42,7 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
     private Exercise_bean.DataBean data;
     int post, count;
 
-    public Button submit;
+    public Button submit, tuichu;
 
 
     public BlankFragment2() {
@@ -69,9 +75,9 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_blank_fragment2, container, false);
         init(view);
+
         final Main2Activity main2Activity = (Main2Activity) getParentFragment();
         topic.setText((post + 1) + "、" + data.getQuestion());
-
         if (data.getUrl().length() != 0) {
             Picasso.with(getActivity())
                     .load(data.getUrl())
@@ -91,15 +97,10 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
         }
 
         if (data.getItem1().length() == 0) {
-         /*   option_ment.setVisibility(View.GONE);*/
             MultipleChoice.setVisibility(View.VISIBLE);
-
             A_rb.setVisibility(View.GONE);
             B_rb.setVisibility(View.GONE);
-
-        } else
-          /*  if (data.getItem4().length() != 0) */
-            {
+        } else if (data.getItem4().length() != 0) {
             A_rb.setText("A、" + data.getItem1());
             B_rb.setText("B、" + data.getItem2());
             C_rb.setText("C、" + data.getItem3());
@@ -111,12 +112,11 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 /*  sqldao = new SQLDAO(getActivity(), Integer.valueOf(Subjects), title);*/
-
                 int i = group.indexOfChild(group.findViewById(checkedId));
                 RadioButton radioButton = group.findViewById(checkedId);
                 radioButton.setText("  " + radioButton.getText());
 //                Exercises_DialogFagment df = (Exercises_DialogFagment) getParentFragment();
-                if (i + 1 == Integer.valueOf(data.getAnswer())) {
+                if (i  == Integer.valueOf(data.getAnswer())) {
                     setRbStyl(radioButton, getActivity().getResources().getDrawable(R.drawable.trueimg), "#00FF00");
                 /*    sqldao.setResult(post, Integer.parseInt(data.getAnswer()));
                     sqldao.close();*/
@@ -126,7 +126,7 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
 
                     main2Activity.right++;
                 }
-                if (i + 1 != Integer.valueOf(data.getAnswer())) {
+                if (i  != Integer.valueOf(data.getAnswer())) {
                     setRbStyl(radioButton, getActivity().getResources().getDrawable(R.drawable.flasimg), "#FF0000");
                  /*   sqldao.setResult(post, i + 1);
                     sqldao.close();*/
@@ -136,7 +136,7 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
                 /*       df.TrueOrFalse();*/
                 disableRadioGroup(group, false);
                 /*  mInterface.AdvanceFragment();*/
-             /*   option_ment.setEnabled(false);*/
+                /*   option_ment.setEnabled(false);*/
             }
         });
 
@@ -144,12 +144,18 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
         MultipleChoice.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String val = MultipleChoice.getText().toString();
+                if (val.equals(data.getAnswer())) {
+                    main2Activity.right++;
 
-               if( MultipleChoice.getText().equals(data.getAnswer())){
-                   main2Activity.right++;
-               }else {
-                   main2Activity.wrong++;
-               }
+                } else {
+                    main2Activity.wrong++;
+                }
+                MultipleChoice.setFocusable(false);
+//                getWindow()
+                InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+             //   imm.hideSoftInputFromWindow(get.getDecorView().getWindowToken(), 0);  getCurrentFocus().getWindowToken()
+                imm.hideSoftInputFromWindow(getView().getWindowToken(),0);
                 lin_select.setVisibility(View.VISIBLE);
                 select.setText("正确答案：" + data.getAnswer());
                 hint.setText(data.getExplains());
@@ -160,6 +166,8 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
         return view;
 
     }
+
+
 
     private void setLin_selectStyle() {
         lin_select.setVisibility(View.VISIBLE);
@@ -190,13 +198,14 @@ public class BlankFragment2 extends Fragment implements View.OnClickListener {
         select = view.findViewById(R.id.select);
         hint = view.findViewById(R.id.hint);
         topic = view.findViewById(R.id.topic);
-        /*  Test_count = view.findViewById(R.id.test_count);*/
+
+
 
         lin_select = view.findViewById(R.id.lin_select);
         imageView = view.findViewById(R.id.imageView);
         option_ment = view.findViewById(R.id.option_ment);
 
-        MultipleChoice=view.findViewById(R.id.MultipleChoice);
+        MultipleChoice = view.findViewById(R.id.MultipleChoice);
 
         A_rb = view.findViewById(R.id.A_rb);
         B_rb = view.findViewById(R.id.B_rb);

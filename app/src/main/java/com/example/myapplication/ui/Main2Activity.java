@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.HomeActivity;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.adpter.BaseDialogFragment;
 import com.example.myapplication.adpter.CustomViewPager;
@@ -44,7 +46,7 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
     private final int TOPIC_SUCCESS = 1;
     private final int WRONG = 0;
     private String url = "http://47.103.15.111:8080/home/ExerciseJson?val=";
-    private Button submit;
+    private Button submit,tuichu;
     private TextView count;
 
     public int right,wrong;
@@ -97,6 +99,15 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
         View view = inflater.inflate(R.layout.activity_main2, container, false);
         init(view);
 
+        tuichu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Toast.makeText(getActivity(), "423543", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Bundle intent = getArguments();
         TestPaperID = intent.getString("Key");
         init(view);
@@ -112,6 +123,7 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
     }
 
     private void init(View view) {
+        tuichu = view.findViewById(R.id.tuichu);
         viewPager = view.findViewById(R.id.viewpager);
         submit = view.findViewById(R.id.submit);
         count = view.findViewById(R.id.count);
@@ -119,6 +131,8 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
         viewPager.setOnPageChangeListener(this);
         submit.setOnClickListener(this);
     }
+
+
 
     private void getTheText(String url) {
         ArrayList<Exercise_bean> list = new ArrayList<Exercise_bean>();
@@ -169,11 +183,11 @@ public class Main2Activity extends BaseDialogFragment implements ViewPager.OnPag
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.submit:
-
-
                 BlankFragment3 fm = BlankFragment3.newInstance(right,wrong,mGuideAdapter.getCount());
                 fm.show(getChildFragmentManager(), "BlankFragment3");
                 break;
+//            case R.id.tuichu:
+//                Toast.makeText(getContext(),"sss",Toast.LENGTH_SHORT).show();
         }
     }
 }

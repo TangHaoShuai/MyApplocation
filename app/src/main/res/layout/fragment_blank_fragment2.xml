@@ -21,24 +21,24 @@
 
     <LinearLayout
         android:id="@+id/qwer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="401dp"
+        android:layout_height="508dp"
         android:layout_below="@+id/topic"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="250dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="161dp"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="50dp"
-            android:layout_weight="1" />
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.5" />
 
         <RadioGroup
             android:id="@+id/option_ment"
@@ -52,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+
                 android:inputType="textPersonName"
                 android:visibility="gone" />
 
@@ -64,7 +65,8 @@
                 android:gravity="center"
                 android:text="A、正确"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:visibility="visible" />
 
             <RadioButton
 
@@ -105,10 +107,9 @@
 
     <LinearLayout
         android:id="@+id/lin_select"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/qwer"
-        android:layout_marginTop="-250dp"
+        android:layout_width="393dp"
+        android:layout_height="152dp"
+        android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:visibility="invisible">
 
@@ -134,7 +135,7 @@
         <TextView
             android:id="@+id/hint"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="29dp"
 
             android:textColor="#000000"
             android:textSize="14sp" />

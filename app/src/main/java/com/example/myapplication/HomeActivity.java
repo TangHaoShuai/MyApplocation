@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
          public boolean handleMessage(@NonNull Message msg) {
              switch (msg.what){
                  case TOPIC_SUCCESS:
-              ArrayList<User_bean>  list= (ArrayList<User_bean>)msg.obj;
+             ArrayList<User_bean>  list= (ArrayList<User_bean>)msg.obj;
 //                    if ( list.get(0).getUsername()==null){
 //                        Toast.makeText(HomeActivity.this,"用户名或密码错误，请重新输入！",Toast.LENGTH_SHORT).show();
 //                 }else {
@@ -61,10 +61,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         ini();
-
-
     }
 
     private void ini(){
